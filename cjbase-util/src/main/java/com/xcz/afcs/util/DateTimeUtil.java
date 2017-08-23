@@ -35,7 +35,6 @@ public class DateTimeUtil {
     private static final String ERR_MSG_PARSE_FAILED = "Parse date failed.";
 
 
-    /** 当前系统时间 **/
     public static Date getCurrentDate(){
         return Calendar.getInstance().getTime();
     }
@@ -224,7 +223,6 @@ public class DateTimeUtil {
         return dateString;
     }
 
-    /** 时间增加减少 **/
     public static Date addDatePrecision(DatePrecision precision, int amount){
         return addDatePrecision(getCurrentDate(), precision, amount);
     }
@@ -254,7 +252,12 @@ public class DateTimeUtil {
         return addDatePrecision(date, precision, -amount);
     }
 
-    // 判断两个时间的大小　的d1>＝d2返回true
+    /**
+     * 判断两个时间的大小
+     * @param d1  源时间
+     * @param d2  目标时间
+     * @return d1>＝d2返回true
+     */
     public static boolean compare(Date d1, Date d2) {
         if (d1 == null || d1 == null) {
             throw new IllegalArgumentException("请传入正确的时间参数，不能为空");

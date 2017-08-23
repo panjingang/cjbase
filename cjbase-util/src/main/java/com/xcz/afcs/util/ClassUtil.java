@@ -36,9 +36,7 @@ public class ClassUtil {
 
     /**
      * 获得class loader<br>
-     * <p/>
      * 若当前线程class loader不存在，取当前类的class loader
-     *
      * @return 类加载器
      */
     public static ClassLoader getClassLoader() {
@@ -80,13 +78,9 @@ public class ClassUtil {
 
     /**
      * 检查目标类是否可以从原类转化<br>
-     * <p/>
      * 转化包括：<br>
-     * <p/>
      * 1、原类是对象，目标类型是原类型实现的接口<br>
-     * <p/>
      * 2、目标类型是原类型的父类<br>
-     * <p/>
      * 3、两者是原始类型或者包装类型（相互转换）
      *
      * @param targetType 目标类型

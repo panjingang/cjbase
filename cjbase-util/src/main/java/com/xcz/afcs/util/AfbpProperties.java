@@ -77,11 +77,6 @@ public class AfbpProperties {
         return null;
     }
 
-    /**
-     * query property by suffix
-     * @param suffix
-     * @return
-     */
     public static Map<String,String> getPropertySuffix(String suffix) {
         if (null != prop) {
             Map<String,String> map = new HashMap<>();

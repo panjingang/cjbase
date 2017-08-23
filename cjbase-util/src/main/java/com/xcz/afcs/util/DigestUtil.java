@@ -36,12 +36,7 @@ public class DigestUtil {
 	 private static MessageDigest getSha512Digest() {  
          return getDigest("SHA-512");  
      }  
-	  
-     /** 
-      * 使用MD5消息摘要算法计算消息摘要 
-      *  
-      * @param data 做消息摘要的数据 
-      */  
+
      public static String MD5(byte[] data) {  
     	 byte[] digestData= getMd5Digest().digest(data);  
     	 return Hex.encodeHexString(digestData);  
@@ -55,46 +50,23 @@ public class DigestUtil {
 		return Hex.encodeHexString(digestData);
 	}
    
-   
-     /** 
-      * 使用SHA-1消息摘要算法计算消息摘要 
-      *  
-      * @param data  做消息摘要的数据 
-      */  
+
      public static String SHA(byte[] data) {  
     	 byte[] digestData=  getShaDigest().digest(data);  
     	 return Hex.encodeHexString(digestData);
      }  
-   
-     /** 
-      * 使用SHA-256消息摘要算法计算消息摘要 
-      *  
-      * @param data 做消息摘要的数据 
-      */  
+
      public static String SHA256(byte[] data) {  
     	 byte[] digestData= getSha256Digest().digest(data);  
     	 return Hex.encodeHexString(digestData);
      }  
    
 
-     /** 
-      * 使用SHA-384消息摘要算法计算消息摘要 
-      *  
-      * @param data 做消息摘要的数据 
-      */  
      public static String SHA384(byte[] data) {  
     	 byte[] digestData=  getSha384Digest().digest(data);  
     	 return Hex.encodeHexString(digestData);  
      }  
-   
-   
-     /** 
-      * 使用SHA-512消息摘要算法计算消息摘要 
-      *  
-      * @param data 
-      *            做消息摘要的数据 
-      * @return SHA-512消息摘要（长度为64的字节数组） 
-      */  
+
      public static String SHA512(byte[] data) {  
     	 byte[] digestData=  getSha512Digest().digest(data);  
     	 return Hex.encodeHexString(digestData);  
@@ -149,6 +121,7 @@ public class DigestUtil {
  	public static String shiftEncode(String str, String key) {
  		return shiftEncode(str, toIntArray(key));
  	}
+
  	/**
  	 * 对已经通过一定方式调换位置的字符进行还原，还原成原始字符串
  	 * @param str 调换后的字符串
