@@ -71,6 +71,8 @@
 	</modules>
 
 	<properties>
+
+		<gpg.skip>true</gpg.skip>
 		<!-- spring -->
 		<spring.version>4.2.0.RELEASE</spring.version>
 
@@ -235,10 +237,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
+				<configuration>
+					<skip>${gpg.skip}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -248,7 +253,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin -->
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
