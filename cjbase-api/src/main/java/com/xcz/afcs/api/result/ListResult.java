@@ -1,11 +1,12 @@
 package com.xcz.afcs.api.result;
 
+import com.xcz.afcs.api.view.BaseView;
 import com.xcz.afcs.validate.annotation.ApiField;
 
 import java.util.Collection;
 import java.util.List;
 
-public class ListResult<T> extends BaseResult {
+public class ListResult<T extends BaseView> extends BaseResult {
 
 	public ListResult(int retCode, String retMsg) {
 		super(retCode, retMsg);
