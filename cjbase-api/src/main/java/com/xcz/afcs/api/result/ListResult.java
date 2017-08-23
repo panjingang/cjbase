@@ -6,7 +6,7 @@ import com.xcz.afcs.validate.annotation.ApiField;
 import java.util.Collection;
 import java.util.List;
 
-public class ListResult<T extends BaseView> extends BaseResult {
+public class ListResult<T> extends BaseResult {
 
 	public ListResult(int retCode, String retMsg) {
 		super(retCode, retMsg);

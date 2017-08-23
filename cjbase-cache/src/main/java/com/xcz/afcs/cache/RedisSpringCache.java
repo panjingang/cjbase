@@ -7,6 +7,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 
 import java.io.*;
+import java.util.concurrent.Callable;
 
 /**
  * Created by jingang on 2016/3/22.
@@ -128,5 +129,8 @@ public class RedisSpringCache implements Cache, InitializingBean {
         return obj;
     }
 
-
+    @Override
+    public <T> T get(Object key, Callable<T> valueLoader) {
+        return null;
+    }
 }
