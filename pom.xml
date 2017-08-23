@@ -66,6 +66,8 @@
 		<module>cjbase-datasource</module>
 		<module>cjbase-container</module>
 
+		<module>cjbase-mybatis</module>
+
 		<module>cjbase-api</module>
 		<module>cjbase-biz</module>
 	</modules>
@@ -77,7 +79,7 @@
 		<spring.version>4.2.0.RELEASE</spring.version>
 
 		<!-- orm -->
-		<mybatis.version>3.2.8</mybatis.version>
+		<mybatis.version>3.4.4</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
 
 		<!-- zookeeper -->
@@ -140,9 +142,7 @@
 		<!-- afcs-common -->
 		<afcs-common.version>0.0.1-SNAPSHOT</afcs-common.version>
 
-		<!-- xpring -->
-		<xpring-core.version>1.0</xpring-core.version>
-		<xpring-ibatis.version>1.0</xpring-ibatis.version>
+		<lombok.version>1.16.16</lombok.version>
 
 		<!-- jpush -->
 		<jpush.version>3.2.3</jpush.version>
@@ -307,6 +307,14 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
 				<version>${spring.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>compile</scope>
 			</dependency>
 
 			<!-- orm -->
@@ -608,6 +616,13 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
