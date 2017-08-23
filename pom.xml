@@ -64,7 +64,7 @@
 		<module>cjbase-cache</module>
 		<module>cjbase-http</module>
 		<module>cjbase-datasource</module>
-		<module>cjbase-container</module>
+		<module>cjbase-jetty</module>
 
 		<module>cjbase-mybatis</module>
 
