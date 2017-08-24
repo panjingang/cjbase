@@ -73,6 +73,10 @@ public class VOUtil {
         return new StringBuilder().append(errorCode.getMsg()).append('[').append(extraInfo).append(']')
                 .toString();
     }
+
+    public static boolean isSuccess(BaseErrorCode resultCode) {
+        return BaseErrorCode.SUCCESS == resultCode;
+    }
     
     public static boolean isSuccess(Map<String, Object> result) {
         return null != result

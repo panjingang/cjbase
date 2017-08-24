@@ -19,7 +19,6 @@ public enum BaseErrorCode implements ErrorCodeEnumMessage {
     INVOKE_REMOTE_ERROR(1005, "远程调用失败"),
     NOT_LOGINED(1006, "用户未登录"),
     NO_PERMISSION(1007, "您的权限不足"),
-    CARD_AUTH_ERROR(1008, "卡认证失败"),
     REMOTE_CONNECT_ERROR(1009, "无法连接远程服务"),
     READ_TIMEOUT_ERROR(1010, "远程读取数据超时"),
     ;
