@@ -35,6 +35,10 @@ public class DateTimeUtil {
     private static final String ERR_MSG_PARSE_FAILED = "Parse date failed.";
 
 
+    public static Date now() {
+        return getCurrentDate();
+    }
+
     public static Date getCurrentDate(){
         return Calendar.getInstance().getTime();
     }
