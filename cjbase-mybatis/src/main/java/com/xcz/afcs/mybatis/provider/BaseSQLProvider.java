@@ -44,7 +44,6 @@ public class BaseSQLProvider<T>  {
                 WHERE(wheres.toArray(new String[0]));
             }
         }.toString();
-        sql += " LIMIT 0, 500";
         return sql;
     }
 
@@ -219,7 +218,11 @@ public class BaseSQLProvider<T>  {
         List<String> columns = new ArrayList();
         columns.add(model.getPrimaryField().getCloumnName());
         for (EntityField entityField: model.getFieldList()) {
-            columns.add(entityField.getCloumnName());
+            if (entityField.getCloumnName().equals(entityField.getFieldName())) {
+                columns.add(entityField.getCloumnName());
+            }else {
+                columns.add(entityField.getCloumnName()+" "+entityField.getFieldName());
+            }
         }
         return columns;
     }
@@ -239,7 +242,11 @@ public class BaseSQLProvider<T>  {
                  if (ef == null) {
                      continue;
                  }
-                 columns.add(ef.getCloumnName());
+                 if (filedName.equals(ef.getCloumnName())) {
+                     columns.add(ef.getCloumnName());
+                 }else{
+                     columns.add(ef.getCloumnName()+" "+filedName);
+                 }
              }
              return columns;
          }else {
