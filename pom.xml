@@ -65,8 +65,8 @@
 		<module>cjbase-http</module>
 		<module>cjbase-datasource</module>
 		<module>cjbase-jetty</module>
-
 		<module>cjbase-mybatis</module>
+		<module>cjbase-lock</module>
 
 		<module>cjbase-api</module>
 		<module>cjbase-biz</module>
