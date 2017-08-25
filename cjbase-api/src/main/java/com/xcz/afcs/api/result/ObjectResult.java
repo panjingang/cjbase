@@ -1,6 +1,5 @@
 package com.xcz.afcs.api.result;
 
-import com.xcz.afcs.api.view.BaseView;
 import com.xcz.afcs.validate.annotation.ApiField;
 
 public class ObjectResult<T> extends BaseResult {

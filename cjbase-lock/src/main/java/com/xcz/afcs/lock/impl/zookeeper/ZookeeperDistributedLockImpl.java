@@ -1,4 +1,4 @@
-package com.xcz.afcs.lock.impl;
+package com.xcz.afcs.lock.impl.zookeeper;
 
 import com.xcz.afcs.lock.DistributedLock;
 

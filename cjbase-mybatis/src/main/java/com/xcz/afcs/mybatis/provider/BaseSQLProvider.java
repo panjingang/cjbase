@@ -4,6 +4,7 @@ package com.xcz.afcs.mybatis.provider;
 import com.xcz.afcs.mybatis.model.*;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import com.xcz.afcs.mybatis.util.EntityViewUtil;
+import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +12,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.jdbc.SQL;
 
 /**
  * Created by mac on 2017/8/11.

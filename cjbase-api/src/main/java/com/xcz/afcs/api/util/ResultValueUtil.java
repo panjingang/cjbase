@@ -4,12 +4,10 @@ import com.xcz.afcs.api.result.BaseResult;
 import com.xcz.afcs.api.result.ListResult;
 import com.xcz.afcs.api.result.ObjectResult;
 import com.xcz.afcs.api.result.PageResult;
-import com.xcz.afcs.api.view.BaseView;
 import com.xcz.afcs.core.base.ErrorCodeEnumMessage;
 import com.xcz.afcs.core.enums.BaseErrorCode;
 
 import java.util.Collection;
-import java.util.List;
 
 public class ResultValueUtil {
 

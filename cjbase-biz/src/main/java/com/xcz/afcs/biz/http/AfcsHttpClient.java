@@ -1,21 +1,14 @@
 package com.xcz.afcs.biz.http;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xcz.afcs.api.result.BaseResult;
-import com.xcz.afcs.api.result.ObjectResult;
-import com.xcz.afcs.api.util.ResultValueUtil;
 import com.xcz.afcs.core.enums.BaseErrorCode;
 import com.xcz.afcs.http.BaseHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.dsig.Reference;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 
 /**

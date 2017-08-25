@@ -2,7 +2,6 @@ package com.xcz.afcs.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xcz.afcs.api.result.BaseResult;
-import com.xcz.afcs.api.result.ObjectResult;
 import com.xcz.afcs.biz.http.AfcsHttpClient;
 import org.junit.Test;
 

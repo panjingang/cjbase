@@ -1,10 +1,8 @@
 package com.xcz.afcs.api.result;
 
-import com.xcz.afcs.api.view.BaseView;
 import com.xcz.afcs.validate.annotation.ApiField;
 
 import java.util.Collection;
-import java.util.List;
 
 public class PageResult<T> extends BaseResult {
 
