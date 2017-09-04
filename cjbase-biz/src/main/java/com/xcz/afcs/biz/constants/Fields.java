@@ -17,8 +17,6 @@ public interface Fields {
 
       String BEARER        = "Bearer ";
 
-
-
       String CONTEXT_ACCESS_URL      = DataContext.NAMESPACE+".accessUrl";
       String CONTEXT_CLIENT_IP       = DataContext.NAMESPACE+".clientIp";
       String CONTEXT_ACCESS_TOKEN    = DataContext.NAMESPACE+".accessToken";
