@@ -12,12 +12,6 @@
     <description>The common module of cjbase project</description>
     <dependencies>
 
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
         <!-- Log libs -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -31,7 +25,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-
 
         <!-- commons -->
         <dependency>

@@ -7,8 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
@@ -52,31 +50,7 @@ public class RuntimeContext {
         }
         
     }
-    
-    public static class ServletContext implements ServletContextListener {
-        
-        private static javax.servlet.ServletContext servletContext;
-        
-        public static javax.servlet.ServletContext getServletContext() {
-            if (null == servletContext) {
-                throw new RuntimeException(
-                        "Servlet Context is null. Please config this Class as a web-app ServletContextListener. e.g. <listener><listener-class>com.hakim.hkfs.common.context.RuntimeContext$ServletContext</listener-class></listener>");
-            }
-            return servletContext;
-        }
-        
-        @Override
-        public void contextInitialized(ServletContextEvent sce) {
-            servletContext = sce.getServletContext();
-        }
-        
-        @Override
-        public void contextDestroyed(ServletContextEvent sce) {
-            // no-op
-        }
-        
-    }
-    
+
     public static boolean isInSpringContext(boolean silent) {
         try {
             getSpringContext();
@@ -172,9 +146,5 @@ public class RuntimeContext {
     public static void publishEvent(ApplicationEvent event) {
         getSpringContext().publishEvent(event);
     }
-    
-    public static javax.servlet.ServletContext getServletContext() {
-        return ServletContext.getServletContext();
-    }
-    
+
 }

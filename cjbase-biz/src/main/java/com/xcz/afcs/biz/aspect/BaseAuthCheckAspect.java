@@ -6,7 +6,6 @@ import com.xcz.afcs.core.context.DataContext;
 import com.xcz.afcs.core.enums.BaseErrorCode;
 import com.xcz.afcs.core.exception.BaseBusinessException;
 import com.xcz.afcs.core.model.SessionIdentity;
-import com.xcz.afcs.util.NetworkUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
