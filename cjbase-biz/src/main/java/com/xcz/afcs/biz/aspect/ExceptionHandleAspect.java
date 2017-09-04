@@ -15,21 +15,16 @@ import java.lang.reflect.Method;
 
 public class ExceptionHandleAspect {
 
-	private static final String CLASS_NAME = ExceptionHandleAspect.class.getName();
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(CLASS_NAME);
-
 	private static final Logger LOG = LoggerFactory.getLogger(ExceptionHandleAspect.class);
 
 	public ExceptionHandleAspect() {
-		LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + CLASS_NAME + " loaded");
+		LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + getClass().getName() + " loaded");
 	}
 
 	public Object handleException(ProceedingJoinPoint pjp) throws Throwable {
 		MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
 		Method method = methodSignature.getMethod();
 		Class<?> returnType = method.getReturnType();
-
 		Object result = null;
 		try {
 			result = pjp.proceed();
@@ -37,7 +32,7 @@ public class ExceptionHandleAspect {
 			return this.handleMethodReturnType(returnType, e.getRetCode(), e.getMessage());
 		}
 		catch (Exception e) {
-			LOGGER.error("execute failed", e);
+			LOG.error("执行失败", e);
 			return this.handleMethodReturnType(returnType, BaseErrorCode.COMMON_ERROR.getCode(), BaseErrorCode.COMMON_ERROR.getMsg());
 		}
 		return result;

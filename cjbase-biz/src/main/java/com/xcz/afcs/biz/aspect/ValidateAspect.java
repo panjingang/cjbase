@@ -13,10 +13,10 @@ public class ValidateAspect {
     private static final Logger LOG = LoggerFactory.getLogger(ValidateAspect.class);
     
     public ValidateAspect() {
-        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + CLASS_NAME + " loaded");
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + getClass().getName() + " loaded");
     }
     
-    public Object validateParam(ProceedingJoinPoint pjp) throws Throwable {
+    public void validateParam(ProceedingJoinPoint pjp) throws Throwable {
         for (Object arg : pjp.getArgs()) {
             if (arg instanceof BaseParameter) {
             	ValidateUtil.validOrThrowException(arg);
@@ -24,8 +24,6 @@ public class ValidateAspect {
                 // ignore;
             }
         }
-        
-        return pjp.proceed();
     }
     
 }

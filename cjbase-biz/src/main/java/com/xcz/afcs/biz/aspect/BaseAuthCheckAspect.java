@@ -20,16 +20,14 @@ import java.lang.reflect.Method;
 
 public abstract class BaseAuthCheckAspect {
 
-    private static final String CLASS_NAME = BaseAuthCheckAspect.class.getName();
-
     private static final Logger LOG = LoggerFactory.getLogger(BaseAuthCheckAspect.class);
 
     public BaseAuthCheckAspect() {
-        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + CLASS_NAME + " loaded");
+        LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + getClass().getName() + " loaded");
     }
 
     public Object checkAuth(ProceedingJoinPoint pjp) throws Throwable {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         String accessToken = getAccessToken(request);
         String clientIp    = getClientIP(request);
@@ -41,7 +39,6 @@ public abstract class BaseAuthCheckAspect {
             Method method = methodSignature.getMethod();
             SessionIdentity identity = getSessionIdentity(accessToken);
             if (method.isAnnotationPresent(NoLogin.class)) {
-
             }
             else {
                 if (identity == null) {
@@ -53,6 +50,7 @@ public abstract class BaseAuthCheckAspect {
                 DataContext.put(Fields.CONTEXT_ACCESS_TOKEN, accessToken);
                 DataContext.put(DataContext.SESSION_IDENTITY, identity);
             }
+            DataContext.put(Fields.CONTEXT_ACCESS_URL, accessUrl);
             DataContext.put(Fields.CONTEXT_CLIENT_IP, clientIp);
             result = pjp.proceed();
         } finally {
@@ -65,6 +63,7 @@ public abstract class BaseAuthCheckAspect {
 
 
     public void clearBinding() {
+        DataContext.remove(Fields.CONTEXT_ACCESS_URL);
         DataContext.remove(Fields.CONTEXT_ACCESS_TOKEN);
         DataContext.remove(Fields.CONTEXT_CLIENT_IP);
         DataContext.remove(DataContext.SESSION_IDENTITY);
@@ -85,15 +84,7 @@ public abstract class BaseAuthCheckAspect {
     }
 
     protected String getClientIP(HttpServletRequest request){
-        String remoteAddr = request.getHeader("RemoteAddr");
-        if (StringUtils.isNotBlank(remoteAddr)) {
-            return remoteAddr;
-        }
-        String ip = NetworkUtil.getIpAddr(request);
-        if (StringUtils.isBlank(ip)) {
-            return "127.0.0.1";
-        }
-        return ip;
+        return request.getRemoteAddr();
     }
 
     protected String getRequestUrl(HttpServletRequest request){
