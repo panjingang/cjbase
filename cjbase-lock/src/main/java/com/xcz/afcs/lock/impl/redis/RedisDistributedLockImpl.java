@@ -1,6 +1,9 @@
 package com.xcz.afcs.lock.impl.redis;
 
 import com.xcz.afcs.lock.DistributedLock;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -45,7 +48,9 @@ public class RedisDistributedLockImpl implements DistributedLock {
         long timeout = waitLockMills;
         while (timeout >= 0) {
             //未被其他线程使用，占用此锁，并设置失效时间
-            if (valueOperations.setIfAbsent(key, threadId)) {
+            Boolean ret = valueOperations.setIfAbsent(key, threadId);
+            System.out.println("threadId:"+threadId+" ret:"+ret+" timeout:"+timeout);
+            if (ret != null && ret.booleanValue()) {
                 redisTemplate.expire(key, keyExpireMills, TimeUnit.MILLISECONDS);
                 exclusiveOwnerThread = currentThread;
                 return true;
@@ -71,5 +76,6 @@ public class RedisDistributedLockImpl implements DistributedLock {
         }
         return false;
     }
+
 
 }
