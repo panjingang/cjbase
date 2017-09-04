@@ -152,7 +152,7 @@ public class BaseHttpClient {
             int statusCode = response.getStatusLine().getStatusCode();
             HttpEntity responseEntity = response.getEntity();
             String data = EntityUtils.toString(responseEntity, StandardCharsets.UTF_8);
-            LOG.info("[server->client] url:"+url+" times:"+(System.currentTimeMillis()-startTime)+" reponse:"+data);
+            LOG.info("[server->client] url:"+url+" times:"+(System.currentTimeMillis()-startTime)+" response:"+data);
             builder.httpStatus = statusCode;
             if (statusCode == HttpStatus.SC_OK) {
                 builder.responseCode = BaseErrorCode.SUCCESS;

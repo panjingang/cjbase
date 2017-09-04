@@ -28,7 +28,7 @@ public class RedisDistributedLockTest {
     @Before
     public void create() {
          JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-         jedisConnectionFactory.setShardInfo(new JedisShardInfo("192.168.1.138", 7000));
+         jedisConnectionFactory.setShardInfo(new JedisShardInfo("127.0.0.1", 6379));
          jedisConnectionFactory.setPoolConfig(new JedisPoolConfig());
 
          redisTemplate = new RedisTemplate();
@@ -39,18 +39,19 @@ public class RedisDistributedLockTest {
      }
 
      @Test
-     public void lock() {
+     public void lock() throws InterruptedException {
+         DistributedLock distributedLock = new RedisDistributedLockImpl(redisTemplate, "cjbase.user.002");
          ExecutorService es = Executors.newFixedThreadPool(8);
          for(int i=0; i<5; i++) {
+             //Thread.sleep(3000);
              es.submit(new Runnable() {
                  @Override
                  public void run() {
-                     DistributedLock distributedLock = new RedisDistributedLockImpl(redisTemplate, "cjbase.user.002");
                      try {
-                         System.out.println(Thread.currentThread().getId()+" begin get lock");
+                         System.out.println(DateTimeUtil.getCurrentDateStr()+" "+"===="+Thread.currentThread().getName()+" try lock");
                          boolean result = distributedLock.tryLock(5000);
-                         System.out.println(DateTimeUtil.getCurrentDateStr()+" "+Thread.currentThread().getId()+" get lock "+result);
-                         Thread.sleep(500);
+                         System.out.println(DateTimeUtil.getCurrentDateStr()+" "+Thread.currentThread().getName()+" get lock "+result);
+                         Thread.sleep(5000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {

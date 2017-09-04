@@ -14,11 +14,12 @@ public enum BaseErrorCode implements ErrorCodeEnumMessage {
      */
     COMMON_ERROR(1001, "系统繁忙，请稍后在试"),
     CONCURRENT_MODIFY(1002, "并发修改失败"),
-    ID_NO_ERROR(1003, "身份证号码错误"),
+    DATASOURCE_ERROR(1003, "数据源连接失败"),
     PARAM_ERROR(1004, "参数错误"),
     INVOKE_REMOTE_ERROR(1005, "远程调用失败"),
     NOT_LOGINED(1006, "用户未登录"),
     NO_PERMISSION(1007, "您的权限不足"),
+    ID_NO_ERROR(1008, "身份证号码错误"),
     REMOTE_CONNECT_ERROR(1009, "无法连接远程服务"),
     READ_TIMEOUT_ERROR(1010, "远程读取数据超时"),
     ;
