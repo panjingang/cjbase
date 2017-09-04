@@ -2,12 +2,17 @@ package com.xcz.afcs.datasource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.xcz.afcs.core.enums.BaseErrorCode;
+import com.xcz.afcs.core.exception.BaseBusinessException;
 import com.xcz.afcs.util.ValueUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -31,14 +36,20 @@ public class NameMappingDataSource extends DruidDataSource {
                 ds = dsMap.get(routerKey);
                 if (null == ds) {
                     if (nameMappingPropProvider == null) {
-                        throw new RuntimeException("未定义 NameMappingPropProvider routerKey " + routerKey);
+                        LOG.warn("未定义 NameMappingPropProvider routerKey " + routerKey);
+                        throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
                     }
                     DataSourceConfig config = nameMappingPropProvider.getDataSourceConfig(routerKey);
                     if (config == null) {
-                        throw new RuntimeException("未定义 NameMappingPropProvider routerKey " + routerKey);
+                        LOG.warn("未定义 NameMappingPropProvider routerKey " + routerKey);
+                        throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
                     }
                     ds = createDataSource(routerKey, config);
-                    dsMap.put(routerKey, ds);
+                    if (testDataSource(ds)) {
+                        dsMap.put(routerKey, ds);
+                    }else{
+                        throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
+                    }
                 }
             } finally {
                 dsMapLock.unlock();
@@ -47,33 +58,61 @@ public class NameMappingDataSource extends DruidDataSource {
         return ds;
     }
 
+    private boolean testDataSource(DataSource dataSource) {
+        if (dataSource == null) {
+            return false;
+        }
+        Connection conn = null;
+        try{
+            conn = dataSource.getConnection();
+            return conn == null ? false : true;
+        }catch (Exception e) {
+           LOG.error("测试链接异常", e);
+        }
+        finally {
+            if (conn != null) {
+                try{
+                    conn.close();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+
     private DruidDataSource createDataSource(String routerKey, DataSourceConfig config) {
          DruidDataSource dataSource = new DruidDataSource();
          //driverClassName
          String driverClassName = config.getDriverClassName();
          if (StringUtils.isBlank(driverClassName)) {
-             throw new RuntimeException("driverClassName for " + routerKey + " is required");
+             LOG.warn("driverClassName for " + routerKey + " is required");
+             throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
          }
         dataSource.setDriverClassName(driverClassName);
 
         // url
         String url = config.getUrl();
         if (StringUtils.isBlank(config.getUrl())) {
-            throw new RuntimeException("url for " + routerKey + " is required");
+            LOG.warn("url for " + routerKey + " is required");
+            throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
         }
         dataSource.setUrl(config.getUrl());
 
         // username
         String username = config.getUsername();
         if (StringUtils.isBlank(username)) {
-            throw new RuntimeException(" username for " + routerKey + " is required");
+            LOG.warn(" username for " + routerKey + " is required");
+            throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
         }
         dataSource.setUsername(username);
 
         // password
         String password = config.getPassword();
         if (null == password) {
-            throw new RuntimeException(" password for " + routerKey + " is required");
+            LOG.warn(" password for " + routerKey + " is required");
+            throw new BaseBusinessException(BaseErrorCode.DATASOURCE_ERROR);
         }
         dataSource.setPassword(password);
 
