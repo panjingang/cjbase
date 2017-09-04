@@ -16,7 +16,7 @@ public class NodeCacheHandler implements NodeCacheListener {
 
     private static Logger LOG = LoggerFactory.getLogger(NodeCacheHandler.class);
 
-    private Set<NodeDataCacheListener> registeredListeners = new ConcurrentHashSet<NodeDataCacheListener>();
+    private Set<NodeDataCacheListener> registeredListeners = new ConcurrentHashSet();
 
     private final String path;
 
@@ -25,6 +25,7 @@ public class NodeCacheHandler implements NodeCacheListener {
     public NodeCacheHandler(String path, NodeCache nodeCache) {
         this.path = path;
         this.nodeCache = nodeCache;
+        this.nodeCache.getListenable().addListener(this);
     }
 
     public void startWatch() {
@@ -41,6 +42,16 @@ public class NodeCacheHandler implements NodeCacheListener {
         }catch (Exception e) {
             LOG.error("stopWatch fail", e);
         }
+    }
+
+    public void destroy() {
+        stopWatch();
+        clearListener();
+    }
+
+    public void clearListener() {
+        registeredListeners.clear();
+        LOG.info("listeners cleared from nodeWatching " + path);
     }
 
     public byte[] getData() {
@@ -67,5 +78,9 @@ public class NodeCacheHandler implements NodeCacheListener {
         registeredListeners.remove(listener);
     }
 
+    @Override
+    public String toString() {
+        return "NodeCacheHandler [path=" + path + "]";
+    }
 
 }

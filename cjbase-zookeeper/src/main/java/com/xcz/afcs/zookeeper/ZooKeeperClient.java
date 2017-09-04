@@ -2,11 +2,13 @@ package com.xcz.afcs.zookeeper;
 
 import com.xcz.afcs.core.util.ConcurrentHashSet;
 import com.xcz.afcs.util.IOUtil;
+import com.xcz.afcs.zookeeper.watch.NodeCacheHandler;
 import com.xcz.afcs.zookeeper.watch.NodeDataCacheListener;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
+import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -14,8 +16,9 @@ import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by jingang on 2017/9/1.
@@ -33,6 +36,8 @@ public class ZooKeeperClient {
     private ConnectionState connectionState;
 
     private Set<ZooKeeperClientConnectionStateListener> connectionStateListeners = new ConcurrentHashSet<>();
+
+    private Map<String, NodeCacheHandler> nodeCacheHandlerMap = new ConcurrentHashMap();
 
     private CuratorFramework client;
 
@@ -79,6 +84,10 @@ public class ZooKeeperClient {
         return client;
     }
 
+
+    public void create(String path) {
+        create(path, CreateMode.PERSISTENT);
+    }
     /**
      * 创建指定路径，如果父路径不存在则自动创建。
      * @param path 路径。
@@ -93,8 +102,6 @@ public class ZooKeeperClient {
             }
         }
     }
-
-
 
     /**
      * 删除指定路径，会递归删除其下子路径，如果路径不存在则不操作。
@@ -149,15 +156,39 @@ public class ZooKeeperClient {
         }
     }
 
-    public void watchData(String path, NodeDataCacheListener listener) {
-
+    public void watchNodeData(String path, NodeDataCacheListener listener) {
+        NodeCacheHandler nodeCacheHandler = getNodeCacheHandler(path);
+        nodeCacheHandler.addListener(listener);
     }
 
-    public void removeWatchNodeData() {
+    public void removeWatchNodeData(String path, NodeDataCacheListener listener) {
+        NodeCacheHandler nodeCacheHandler = nodeCacheHandlerMap.get(path);
+        if (null != nodeCacheHandler) {
+            nodeCacheHandler.removeListener(listener);
+        }
+    }
 
+    public void unregisterWatchNodeData(String path) {
+        LOG.info("unregister data watch at path: " + path);
+        NodeCacheHandler nodeCacheHandler = nodeCacheHandlerMap.get(path);
+        if (null != nodeCacheHandler) {
+            nodeCacheHandler.destroy();
+            nodeCacheHandlerMap.remove(path);
+        }
     }
 
 
+    private NodeCacheHandler getNodeCacheHandler(String path) {
+        NodeCacheHandler nodeCacheHandler = nodeCacheHandlerMap.get(path);
+        if (nodeCacheHandler != null) {
+            return nodeCacheHandler;
+        }
+        NodeCache nodeCache = new NodeCache(client, path);
+        nodeCacheHandler = new NodeCacheHandler(path, nodeCache);
+        nodeCacheHandler.startWatch();
+        nodeCacheHandlerMap.put(path, nodeCacheHandler);
+        return nodeCacheHandler;
+    }
 
     public void addClientConnectionStateListener(ZooKeeperClientConnectionStateListener listener) {
         if (connectionStateListeners.add(listener) && CuratorFrameworkState.STARTED == client.getState()) {
@@ -168,7 +199,6 @@ public class ZooKeeperClient {
     public void removeClientConnectionStateListener(ZooKeeperClientConnectionStateListener listener) {
         connectionStateListeners.remove(listener);
     }
-
 
     private void notifyConnectionStateListener(ConnectionState state, ZooKeeperClientConnectionStateListener listener) {
         if (state.isConnected()) {
