@@ -1,7 +1,10 @@
 package com.xcz.afcs.lock.impl.redis;
 
 import com.xcz.afcs.lock.DistributedLock;
-import redis.clients.jedis.Jedis;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -15,57 +18,55 @@ public class RedisDistributedLockImpl implements DistributedLock {
 
     private Thread exclusiveOwnerThread = null;
 
-    private Jedis jedis;
+    private final RedisTemplate redisTemplate;
 
     private String key;
 
     private long keyExpireMills;
 
-    public RedisDistributedLockImpl(Jedis jedis, String key) {
-        this(jedis, key, DEFAULT_EXPIRE_MILL_TIME);
+    public RedisDistributedLockImpl(RedisTemplate redisTemplate, String key) {
+        this(redisTemplate, key, DEFAULT_EXPIRE_MILL_TIME);
     }
 
-    public RedisDistributedLockImpl(Jedis jedis, String key, long keyExpireMills) {
-        this.jedis = jedis;
-        this.key   = key;
+    public RedisDistributedLockImpl(RedisTemplate redisTemplate, String key, long keyExpireMills) {
+        this.redisTemplate = redisTemplate;
+        this.key = key;
         this.keyExpireMills = keyExpireMills;
     }
 
     @Override
-    public boolean tryLock(long waitLockMills) throws InterruptedException{
+    public boolean tryLock(long waitLockMills) throws InterruptedException {
         if (waitLockMills < 1 || keyExpireMills < 1) {
             return false;
         }
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         Thread currentThread = Thread.currentThread();
-        String threadId  = String.valueOf(currentThread.getId());
-        int expireSec = (int)keyExpireMills / 1000 ;
+        String threadId = String.valueOf(currentThread.getId());
         long timeout = waitLockMills;
         while (timeout >= 0) {
             //未被其他线程使用，占用此锁，并设置失效时间
-            if (jedis.setnx(key, threadId  ) == 1) {
-                jedis.expire(key, expireSec);
+            if (valueOperations.setIfAbsent(key, threadId)) {
+                redisTemplate.expire(key, keyExpireMills, TimeUnit.MILLISECONDS);
                 exclusiveOwnerThread = currentThread;
                 return true;
             }
             //设置setnx后，reids crash 会导致expire未设置成功
-            long ttl = jedis.ttl(key);
-            if (ttl < 0) {
-                jedis.setex(key, expireSec, threadId  );
+            Long ttl = redisTemplate.getExpire(key);
+            if (ttl == null || ttl < 0) {
+                valueOperations.set(key, threadId, keyExpireMills, TimeUnit.MILLISECONDS);
                 exclusiveOwnerThread = currentThread;
                 return true;
             }
             Thread.sleep(INTERVAL_SLEEP_MILL_TIME);
-            timeout -=  INTERVAL_SLEEP_MILL_TIME;
+            timeout -= INTERVAL_SLEEP_MILL_TIME;
         }
         return false;
     }
 
     @Override
     public boolean unLock() {
-        String currentThreadId = String.valueOf(Thread.currentThread().getId());
-        String value = jedis.get(key);
-        if (currentThreadId.equals(value)) {
-            jedis.del(key);
+        if (exclusiveOwnerThread != null && exclusiveOwnerThread == Thread.currentThread()) {
+            redisTemplate.delete(key);
             return true;
         }
         return false;

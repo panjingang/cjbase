@@ -52,11 +52,6 @@ public class ZooKeeperClientTest {
                 System.out.println("=============data:"+data ==null ? "" : new String(data));
             }
         });
-        try {
-            Thread.sleep(1000000000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 

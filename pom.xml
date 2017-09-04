@@ -59,18 +59,14 @@
 		<module>cjbase-core</module>
 		<module>cjbase-util</module>
 		<module>cjbase-validate</module>
-
 		<module>cjbase-push</module>
-		<module>cjbase-cache</module>
 		<module>cjbase-http</module>
 		<module>cjbase-datasource</module>
 		<module>cjbase-jetty</module>
 		<module>cjbase-mybatis</module>
-
 		<module>cjbase-zookeeper</module>
 		<module>cjbase-redis</module>
 		<module>cjbase-lock</module>
-
 		<module>cjbase-api</module>
 		<module>cjbase-biz</module>
 	</modules>
@@ -106,8 +102,9 @@
 		<bouncycastle.version>1.51</bouncycastle.version>
 
 		<!-- cache -->
-		<jedis.version>2.7.3</jedis.version>
-		<spymemcached.version>2.11.5</spymemcached.version>
+		<spring-data-redis.version>1.7.2.RELEASE</spring-data-redis.version>
+		<jedis.version>2.9.0</jedis.version>
+
 
 		<!-- commons -->
 		<commons-lang.version>3.3.2</commons-lang.version>
@@ -450,9 +447,9 @@
 				<version>${jedis.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.spy</groupId>
-				<artifactId>spymemcached</artifactId>
-				<version>${spymemcached.version}</version>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-redis</artifactId>
+				<version>${spring-data-redis.version}</version>
 			</dependency>
 
 			<!-- commons -->

@@ -20,9 +20,9 @@
 
         <!-- redis -->
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <scope>provided</scope>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cjbase-redis</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

@@ -21,12 +21,6 @@
 
         <dependency>
             <groupId>${parent.groupId}</groupId>
-            <artifactId>cjbase-cache</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${parent.groupId}</groupId>
             <artifactId>cjbase-push</artifactId>
             <version>${project.version}</version>
         </dependency>
