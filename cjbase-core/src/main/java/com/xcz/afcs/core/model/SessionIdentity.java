@@ -1,16 +1,13 @@
 package com.xcz.afcs.core.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class SessionIdentity implements Serializable {
 
-	protected String userId;
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+	protected Long userId;
 }

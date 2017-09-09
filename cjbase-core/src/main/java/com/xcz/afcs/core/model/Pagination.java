@@ -1,4 +1,4 @@
-package com.xcz.afcs.mybatis.model;
+package com.xcz.afcs.core.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,11 @@ public class Pagination implements Serializable {
 
     private Integer offset;
 
+
     private Integer pageSize;
+
+
+    private Integer pageNo;
+
 
 }

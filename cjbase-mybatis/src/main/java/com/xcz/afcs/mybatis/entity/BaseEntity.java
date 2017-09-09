@@ -16,6 +16,4 @@ public class BaseEntity implements Serializable {
     @Column(primary = true, comment="主键编号")
     private Long id;
 
-    @Column(comment = "版本号")
-    private Long updateVersion = 0L;
 }

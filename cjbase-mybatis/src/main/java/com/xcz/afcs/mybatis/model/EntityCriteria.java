@@ -1,5 +1,6 @@
 package com.xcz.afcs.mybatis.model;
 
+import com.xcz.afcs.core.model.Pagination;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import lombok.Getter;
 import lombok.Setter;
