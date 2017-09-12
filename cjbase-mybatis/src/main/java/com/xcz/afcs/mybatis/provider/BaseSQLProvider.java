@@ -47,7 +47,7 @@ public class BaseSQLProvider<T>  {
         return sql;
     }
 
-    public <T> String querySQL(EntityCriteria<T> criteria) {
+    public final <T> String querySQL(EntityCriteria<T> criteria) {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
         final List<String> orders = getOrderSQL(criteria.getOrderList(), model.getPrimaryField());
@@ -124,7 +124,7 @@ public class BaseSQLProvider<T>  {
             {
                 SELECT(getColums(model).toArray(new String[0]));
                 FROM(model.getTableName());
-                WHERE(model.getPrimaryField().getCloumnName()+" = #{"+model.getPrimaryField().getFieldName()+"}");
+                WHERE(model.getPrimaryField().getCloumnName()+" = #{id}");
             }
         }.toString();
     }
@@ -145,7 +145,7 @@ public class BaseSQLProvider<T>  {
         return new SQL() {
             {
                 DELETE_FROM(model.getTableName());
-                WHERE(model.getPrimaryField().getCloumnName()+" = #{"+model.getPrimaryField().getFieldName()+"}");
+                WHERE(model.getPrimaryField().getCloumnName()+" = #{id}");
             }
         }.toString();
     }

@@ -43,6 +43,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>cjbase-redis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
