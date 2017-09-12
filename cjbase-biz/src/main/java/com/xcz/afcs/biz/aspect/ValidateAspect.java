@@ -2,6 +2,7 @@ package com.xcz.afcs.biz.aspect;
 
 import com.xcz.afcs.api.param.BaseParameter;
 import com.xcz.afcs.validate.ValidateUtil;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class ValidateAspect {
         LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + getClass().getName() + " loaded");
     }
     
-    public void validateParam(ProceedingJoinPoint pjp) throws Throwable {
+    public void validateParam(JoinPoint pjp) throws Throwable {
         for (Object arg : pjp.getArgs()) {
             if (arg instanceof BaseParameter) {
             	ValidateUtil.validOrThrowException(arg);
