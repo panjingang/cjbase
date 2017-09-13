@@ -1,16 +1,16 @@
 package com.xcz.afcs.mybatis.dao;
 
-import com.xcz.afcs.mybatis.entity.BaseEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
 import com.xcz.afcs.mybatis.provider.BaseSQLProvider;
 import org.apache.ibatis.annotations.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mac on 2017/8/11.
  */
-public interface BaseDao<T extends BaseEntity, K> {
+public interface BaseDao<T extends Serializable, K> {
 
     @SelectProvider(type = BaseSQLProvider.class, method = "findAllSQL")
     List<T> findAll(Class<T> entityCls);
@@ -35,6 +35,9 @@ public interface BaseDao<T extends BaseEntity, K> {
 
     @UpdateProvider(type = BaseSQLProvider.class, method = "updateSQL")
     int update(T entity);
+
+    @UpdateProvider(type = BaseSQLProvider.class, method = "updateCasSQL")
+    int updateCas(T entity);
 
     @DeleteProvider(type = BaseSQLProvider.class, method = "deleteSQL")
     int delete(@Param("id") K id, Class<T> entityCls);

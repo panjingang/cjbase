@@ -1,7 +1,7 @@
 package com.xcz.afcs.mybatis.service;
 
 import com.xcz.afcs.mybatis.dao.BaseDao;
-import com.xcz.afcs.mybatis.entity.BaseEntity;
+import com.xcz.afcs.mybatis.entity.UpdatableEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
 import com.xcz.afcs.util.ObjectUtil;
 
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by mac on 2017/8/12.
  */
-public abstract class BaseService<T extends BaseEntity, K> {
+public abstract class BaseService<T extends UpdatableEntity, K> {
 
     private Class<T> entityClass = null;
 
@@ -41,10 +41,10 @@ public abstract class BaseService<T extends BaseEntity, K> {
     }
 
     public void saveOrUpdate(T entity) {
-        if (entity.getId() == null) {
+        if (entity.getPrimaryId() == null) {
             save(entity);
         }else{
-            update(entity);
+            updateCas(entity);
         }
     }
 
@@ -62,6 +62,10 @@ public abstract class BaseService<T extends BaseEntity, K> {
 
     public int update(T entity) {
         return getDAO().update(entity);
+    }
+
+    public int updateCas(T entity) {
+        return getDAO().updateCas(entity);
     }
 
     public int delete(K id){

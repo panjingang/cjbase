@@ -134,11 +134,24 @@ public class BaseSQLProvider<T>  {
         return new SQL() {
             {
                 UPDATE(model.getTableName());
-                SET(getUpdateSets(model).toArray(new String[0]));
+                SET(getUpdateSets(model, false).toArray(new String[0]));
                 WHERE(model.getPrimaryField().getCloumnName()+" = #{"+model.getPrimaryField().getFieldName()+"}");
             }
         }.toString();
     }
+
+    public <T> String updateCasSQL(final T entity) {
+        final EntityModel model = EntityUtil.parseEntity(entity.getClass());
+        return new SQL() {
+            {
+                UPDATE(model.getTableName());
+                SET(getUpdateSets(model, true).toArray(new String[0]));
+                WHERE(model.getPrimaryField().getCloumnName()+" = #{"+model.getPrimaryField().getFieldName()+"}");
+                WHERE("updateVersion = #{updateVersion}");
+            }
+        }.toString();
+    }
+
 
     public <T> String deleteSQL(final Class<T> entityCls) {
         final EntityModel model = EntityUtil.parseEntity(entityCls);
@@ -265,10 +278,21 @@ public class BaseSQLProvider<T>  {
     }
 
 
-    private List<String> getUpdateSets(EntityModel model) {
+    private List<String> getUpdateSets(EntityModel model, boolean cas) {
         List<String> sets = new ArrayList();
         for (EntityField entityField: model.getFieldList()) {
-            sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
+            if (entityField.getFieldName().equals(model.getPrimaryField().getFieldName())) {
+                continue;
+            }
+            if (cas) {
+                if ("updateVersion".equals(entityField.getFieldName())) {
+                    sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
+                }else {
+                    sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
+                }
+            }else{
+                sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
+            }
         }
         return sets;
     }

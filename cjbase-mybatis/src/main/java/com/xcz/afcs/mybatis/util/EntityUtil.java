@@ -2,7 +2,7 @@ package com.xcz.afcs.mybatis.util;
 
 import com.xcz.afcs.mybatis.annonation.Column;
 import com.xcz.afcs.mybatis.annonation.Table;
-import com.xcz.afcs.mybatis.entity.BaseEntity;
+import com.xcz.afcs.mybatis.entity.UpdatableEntity;
 import com.xcz.afcs.mybatis.model.EntityField;
 import com.xcz.afcs.mybatis.model.EntityModel;
 import org.apache.commons.lang3.StringUtils;
@@ -24,8 +24,8 @@ public class EntityUtil {
      private static Map<String, EntityModel> modelCache = new ConcurrentHashMap<String, EntityModel>();
 
      public static <T> EntityModel parseEntity(Class<T> entityCls) {
-         if (!BaseEntity.class.isAssignableFrom(entityCls)) {
-             throw new RuntimeException(entityCls.getName()+"必须继承BaseEntity");
+         if (!UpdatableEntity.class.isAssignableFrom(entityCls)) {
+             throw new RuntimeException(entityCls.getName()+"必须继承UpdatableEntity");
          }
          Table table = entityCls.getAnnotation(Table.class);
          if (table == null) {
