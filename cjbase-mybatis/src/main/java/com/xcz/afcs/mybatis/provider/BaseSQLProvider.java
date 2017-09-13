@@ -118,7 +118,8 @@ public class BaseSQLProvider<T>  {
         return sb.toString();
     }
 
-    public <T> String getOneSQL(final Class<T> entityCls) {
+    public <T> String getOneSQL(final Map<String, Object> params ) {
+        final Class<T> entityCls = (Class<T>) params.get("entityClass");
         final EntityModel model = EntityUtil.parseEntity(entityCls);
         return new SQL() {
             {
@@ -153,7 +154,8 @@ public class BaseSQLProvider<T>  {
     }
 
 
-    public <T> String deleteSQL(final Class<T> entityCls) {
+    public <T> String deleteSQL(final Map<String, Object> params) {
+        final Class<T> entityCls = (Class<T>) params.get("entityClass");
         final EntityModel model = EntityUtil.parseEntity(entityCls);
         return new SQL() {
             {

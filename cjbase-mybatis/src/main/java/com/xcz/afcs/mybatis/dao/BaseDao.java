@@ -31,7 +31,7 @@ public interface BaseDao<T extends Serializable, K> {
     void batchSave(@Param("entityList") List<T> entityList);
 
     @SelectProvider(type = BaseSQLProvider.class, method = "getOneSQL")
-    T getOne(@Param("id") K id, Class<T> entityCls);
+    T getOne(@Param("id") K id, @Param("entityClass") Class<T> entityCls);
 
     @UpdateProvider(type = BaseSQLProvider.class, method = "updateSQL")
     int update(T entity);
@@ -40,6 +40,6 @@ public interface BaseDao<T extends Serializable, K> {
     int updateCas(T entity);
 
     @DeleteProvider(type = BaseSQLProvider.class, method = "deleteSQL")
-    int delete(@Param("id") K id, Class<T> entityCls);
+    int delete(@Param("id") K id, @Param("entityClass") Class<T> entityCls);
 
 }
