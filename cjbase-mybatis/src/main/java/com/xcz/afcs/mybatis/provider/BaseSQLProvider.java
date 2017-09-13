@@ -147,7 +147,7 @@ public class BaseSQLProvider<T>  {
                 UPDATE(model.getTableName());
                 SET(getUpdateSets(model, true).toArray(new String[0]));
                 WHERE(model.getPrimaryField().getCloumnName()+" = #{"+model.getPrimaryField().getFieldName()+"}");
-                WHERE("updateVersion = #{updateVersion}");
+                WHERE("version = #{version}");
             }
         }.toString();
     }
@@ -285,8 +285,8 @@ public class BaseSQLProvider<T>  {
                 continue;
             }
             if (cas) {
-                if ("updateVersion".equals(entityField.getFieldName())) {
-                    sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
+                if ("version".equals(entityField.getFieldName())) {
+                    sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}+1");
                 }else {
                     sets.add(entityField.getCloumnName()+"= #{"+entityField.getFieldName()+"}");
                 }
