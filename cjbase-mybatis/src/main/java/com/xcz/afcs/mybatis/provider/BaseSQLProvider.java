@@ -3,6 +3,7 @@ package com.xcz.afcs.mybatis.provider;
 
 import com.xcz.afcs.core.model.Pagination;
 import com.xcz.afcs.mybatis.model.*;
+import com.xcz.afcs.mybatis.provider.params.BaseParam;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import com.xcz.afcs.mybatis.util.EntityViewUtil;
 import org.apache.ibatis.jdbc.SQL;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * Created by mac on 2017/8/11.
  */
-public class BaseSQLProvider<T>  {
+public class BaseSQLProvider  {
 
      private static final Logger logger = LoggerFactory.getLogger(BaseSQLProvider.class);
 
@@ -308,6 +309,23 @@ public class BaseSQLProvider<T>  {
          }
          sb.append(")");
          return sb.toString();
+     }
+
+     public String getOrderAndPageSQL(BaseParam param) {
+         SQL sql = new SQL();
+         if (param.getOrderList() != null) {
+             for (Order order : param.getOrderList()) {
+                  if (order.isAscending()) {
+                      sql.ORDER_BY(order.getPropertyName()+" ASC ");
+                  }else {
+                      sql.ORDER_BY(order.getPropertyName()+" DESC ");
+                  }
+             }
+         }
+         if (param.getPage() != null) {
+             return sql.toString()+" LIMIT #{page.offset}, #{page.pageSize}";
+         }
+         return sql.toString();
      }
 
 
