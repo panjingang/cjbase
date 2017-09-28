@@ -1,5 +1,7 @@
 package com.xcz.afcs.mybatis.service;
 
+import com.xcz.afcs.core.enums.BaseErrorCode;
+import com.xcz.afcs.core.exception.BaseBusinessException;
 import com.xcz.afcs.mybatis.dao.BaseDao;
 import com.xcz.afcs.mybatis.entity.UpdatableEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
@@ -65,7 +67,11 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
     }
 
     public int updateCas(T entity) {
-        return getDAO().updateCas(entity);
+        int rows = getDAO().updateCas(entity);
+        if (rows < 1) {
+            throw new BaseBusinessException(BaseErrorCode.CONCURRENT_MODIFY);
+        }
+        return rows;
     }
 
     public int delete(K id){

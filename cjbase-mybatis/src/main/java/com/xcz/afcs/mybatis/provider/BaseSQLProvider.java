@@ -166,7 +166,6 @@ public class BaseSQLProvider  {
         }.toString();
     }
 
-
     private <T> List<String> getOrderSQL(List<Order> orderList, EntityField primary) {
         List<String> orders = new ArrayList<String>();
         if (orderList.size() == 0) {
