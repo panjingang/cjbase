@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,4 +34,21 @@ public class AfcsRedisCache {
     public void remove(String key) {
         redisTemplate.delete(key);
     }
+
+    public boolean hasHashKey(String key, String hashKey) {
+       return redisTemplate.opsForHash().hasKey(key, hashKey);
+    }
+
+    public void putHashValue(String key, String hashKey, Object hashValue) {
+         redisTemplate.opsForHash().put(key, hashKey, hashValue);
+    }
+
+    public void putAllHashValue(String key, Map<String, Object> values) {
+        redisTemplate.opsForHash().putAll(key, values);
+    }
+
+    public Object getHashValue(String key, String hashKey) {
+       return  redisTemplate.opsForHash().get(key, hashKey);
+    }
+
 }

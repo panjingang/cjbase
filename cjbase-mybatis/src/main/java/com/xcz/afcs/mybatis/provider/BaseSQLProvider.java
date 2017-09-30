@@ -35,7 +35,7 @@ public class BaseSQLProvider  {
          return sql;
      }
 
-    public <T> String countSQL(EntityCriteria<T> criteria) {
+    public  String countSQL(EntityCriteria criteria) {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
         String sql = new SQL() {
@@ -48,7 +48,7 @@ public class BaseSQLProvider  {
         return sql;
     }
 
-    public final <T> String querySQL(EntityCriteria<T> criteria) {
+    public final String querySQL(EntityCriteria criteria) {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
         final List<String> orders = getOrderSQL(criteria.getOrderList(), model.getPrimaryField());
@@ -243,7 +243,7 @@ public class BaseSQLProvider  {
         return columns;
     }
 
-    public <T> List<String> getSelectColumns(EntityCriteria<T> criteria, EntityModel model) {
+    public <T> List<String> getSelectColumns(EntityCriteria criteria, EntityModel model) {
          List<String> columns = new ArrayList();
          if (criteria.getSelectColumns().size() != 0) {
              return criteria.getSelectColumns();

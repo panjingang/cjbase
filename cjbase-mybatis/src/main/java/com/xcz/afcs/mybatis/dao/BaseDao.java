@@ -16,10 +16,10 @@ public interface BaseDao<T extends Serializable, K> {
     List<T> findAll(Class<T> entityCls);
 
     @SelectProvider(type = BaseSQLProvider.class, method = "countSQL")
-    int count(EntityCriteria<T> criteria);
+    int count(EntityCriteria criteria);
 
     @SelectProvider(type = BaseSQLProvider.class, method = "querySQL")
-    List<T> query(EntityCriteria<T> criteria);
+    <V> List<V> query(EntityCriteria criteria);
 
     @InsertProvider(type = BaseSQLProvider.class, method = "insertSQL")
     void save(T entity);

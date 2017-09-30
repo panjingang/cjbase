@@ -26,11 +26,11 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
         return getDAO().findAll(entityClass);
     }
 
-    public int count(EntityCriteria<T> criteria) {
+    public int count(EntityCriteria criteria) {
         return getDAO().count(criteria);
     }
 
-    public List<T> query(EntityCriteria<T> criteria) {
+    public <V> List<V> query(EntityCriteria criteria) {
         return getDAO().query(criteria);
     }
 
@@ -50,12 +50,12 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
         }
     }
 
-    public T get(EntityCriteria<T> criteria) {
+    public <V> V get(EntityCriteria criteria) {
         List<T> list = query(criteria);
         if (ObjectUtil.isNull(list)) {
             return null;
         }
-        return list.get(0);
+        return (V)list.get(0);
     }
 
     public T getOne(K id) {

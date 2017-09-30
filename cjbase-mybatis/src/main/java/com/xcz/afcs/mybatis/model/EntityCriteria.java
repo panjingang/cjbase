@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by mac on 2017/8/13.
  */
 
-public class EntityCriteria<T> implements Serializable{
+public class EntityCriteria implements Serializable{
 
     private static final Log logger = LogFactory.getLog(EntityCriteria.class);
 
@@ -34,7 +34,7 @@ public class EntityCriteria<T> implements Serializable{
     private EntityModel model;
 
     @Getter
-    private Class<T> entityClass;
+    private Class<?> entityClass;
 
     private Integer paramExt = 1;
 
@@ -49,7 +49,7 @@ public class EntityCriteria<T> implements Serializable{
     @Getter
     private Map<String, Object> params = new LinkedHashMap<String, Object>();
 
-    public EntityCriteria(Class<T> entityClass) {
+    public EntityCriteria(Class<?> entityClass) {
         this.entityClass = entityClass;
         model = EntityUtil.parseEntity(entityClass);
     }
