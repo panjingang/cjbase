@@ -21,9 +21,6 @@ public interface BaseDao<T extends Serializable, K> {
     @SelectProvider(type = BaseSQLProvider.class, method = "querySQL")
     List<T> query(EntityCriteria<T> criteria);
 
-    @SelectProvider(type = BaseSQLProvider.class, method = "queryViewSQL")
-    <V> List<V> queryView(EntityCriteria<T> criteria);
-
     @InsertProvider(type = BaseSQLProvider.class, method = "insertSQL")
     void save(T entity);
 

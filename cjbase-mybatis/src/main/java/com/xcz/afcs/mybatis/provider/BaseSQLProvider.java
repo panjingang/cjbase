@@ -55,7 +55,7 @@ public class BaseSQLProvider  {
         final Pagination page     = criteria.getPagination();
         String sql = new SQL() {
             {
-                SELECT(getColums(model).toArray(new String[0]));
+                SELECT(getSelectColumns(criteria, model).toArray(new String[0]));
                 FROM(model.getTableName());
                 WHERE(wheres.toArray(new String[0]));
                 ORDER_BY(orders.toArray(new String[0]));
@@ -67,6 +67,7 @@ public class BaseSQLProvider  {
         return sql;
     }
 
+    /*
     public <T> String queryViewSQL(final EntityCriteria<T> criteria) {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
@@ -84,7 +85,7 @@ public class BaseSQLProvider  {
             sql += " LIMIT "+page.getOffset()+","+page.getPageSize();
         }
         return sql;
-    }
+    }*/
 
     public <T> String insertSQL(final T entity) {
          final EntityModel model = EntityUtil.parseEntity(entity.getClass());
