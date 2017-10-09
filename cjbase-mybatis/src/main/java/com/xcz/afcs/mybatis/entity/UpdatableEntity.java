@@ -16,6 +16,6 @@ public abstract class UpdatableEntity implements Serializable {
     public abstract Long getPrimaryId();
 
     @Column(comment = "版本号")
-    private Long version = 0L;
+    private Long version;
 
 }

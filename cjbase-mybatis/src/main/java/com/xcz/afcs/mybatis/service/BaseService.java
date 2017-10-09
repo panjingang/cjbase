@@ -35,15 +35,20 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
     }
 
     public void save(T entity) {
+        entity.setVersion(0L);
         getDAO().save(entity);
     }
 
     public void batchSave(List<T> entityList) {
+        for (T entity : entityList) {
+            entity.setVersion(0L);
+        }
         getDAO().batchSave(entityList);
     }
 
     public void saveOrUpdate(T entity) {
-        if (entity.getPrimaryId() == null) {
+        if (entity.getVersion() == null) {
+            entity.setVersion(0L);
             save(entity);
         }else{
             updateCas(entity);
