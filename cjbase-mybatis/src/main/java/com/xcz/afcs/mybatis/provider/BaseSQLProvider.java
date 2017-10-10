@@ -174,7 +174,7 @@ public class BaseSQLProvider  {
             return orders;
         }
         for (Order order : orderList) {
-            orders.add(order.getCloumnName() + (order.isAscending() ? " ASC " : "DESC"));
+            orders.add(order.getCloumnName() + (order.isAscending() ? " ASC " : " DESC"));
         }
         return orders;
     }
