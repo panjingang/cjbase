@@ -64,6 +64,7 @@ public class EntityCriteria implements Serializable{
     public void add(Expression expression) {
         if (expression.getPropertyName().contains(".")) {
             expression.setCloumnName(expression.getPropertyName());
+            expression.setParamName(expression.getPropertyName().replace(".", "_")+"_"+paramExt);
         }else{
             EntityField entityField = model.getEntityFieldByName(expression.getPropertyName());
             if (entityField == null) {
@@ -72,8 +73,8 @@ public class EntityCriteria implements Serializable{
             }else {
                 expression.setCloumnName(entityField.getCloumnName());
             }
+            expression.setParamName(expression.getPropertyName()+"_"+paramExt);
         }
-        expression.setParamName(expression.getPropertyName()+"_"+paramExt);
         params.put(expression.getParamName(), expression.getValue());
         paramExt ++;
         this.expressionList.add(expression);
