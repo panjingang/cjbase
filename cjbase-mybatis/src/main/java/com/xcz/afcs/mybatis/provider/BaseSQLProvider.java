@@ -7,6 +7,7 @@ import com.xcz.afcs.mybatis.provider.params.BaseParam;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import com.xcz.afcs.mybatis.util.EntityViewUtil;
 import com.xcz.afcs.util.ValueUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,18 @@ public class BaseSQLProvider  {
         String sql = new SQL() {
             {
                 SELECT("count(1)");
-                FROM(model.getTableName());
+                FROM(StringUtils.isNotBlank(criteria.getTableName()) ? criteria.getTableName() : model.getTableName());
+                for(Join join : criteria.getJoinList()) {
+                    if (join.getJoinType() == Join.JoinType.JOIN) {
+                        JOIN(join.getJoin());
+                    }
+                    if (join.getJoinType() == Join.JoinType.LEFT_JOIN) {
+                        LEFT_OUTER_JOIN(join.getJoin());
+                    }
+                    if (join.getJoinType() == Join.JoinType.RIGHT_JOIN) {
+                        RIGHT_OUTER_JOIN(join.getJoin());
+                    }
+                }
                 WHERE(wheres.toArray(new String[0]));
             }
         }.toString();
@@ -52,12 +64,23 @@ public class BaseSQLProvider  {
     public final String querySQL(EntityCriteria criteria) {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
-        final List<String> orders = getOrderSQL(criteria.getOrderList(), model.getPrimaryField());
+        final List<String> orders = getOrderSQL(criteria.getOrderList(), criteria, model.getPrimaryField());
         final Pagination page     = criteria.getPagination();
         String sql = new SQL() {
             {
                 SELECT(getSelectColumns(criteria, model).toArray(new String[0]));
-                FROM(model.getTableName());
+                FROM(StringUtils.isNotBlank(criteria.getTableName()) ? criteria.getTableName() : model.getTableName());
+                for(Join join : criteria.getJoinList()) {
+                    if (join.getJoinType() == Join.JoinType.JOIN) {
+                        JOIN(join.getJoin());
+                    }
+                    if (join.getJoinType() == Join.JoinType.LEFT_JOIN) {
+                        LEFT_OUTER_JOIN(join.getJoin());
+                    }
+                    if (join.getJoinType() == Join.JoinType.RIGHT_JOIN) {
+                        RIGHT_OUTER_JOIN(join.getJoin());
+                    }
+                }
                 WHERE(wheres.toArray(new String[0]));
                 ORDER_BY(orders.toArray(new String[0]));
             }
@@ -148,10 +171,10 @@ public class BaseSQLProvider  {
         }.toString();
     }
 
-    private <T> List<String> getOrderSQL(List<Order> orderList, EntityField primary) {
+    private <T> List<String> getOrderSQL(List<Order> orderList, EntityCriteria criteria, EntityField primaryField) {
         List<String> orders = new ArrayList<String>();
-        if (orderList.size() == 0) {
-            orders.add(primary.getCloumnName()+" DESC ");
+        if (orderList.size() == 0 && StringUtils.isBlank(criteria.getTableName())) {
+            orders.add(primaryField.getCloumnName()+" DESC ");
             return orders;
         }
         for (Order order : orderList) {

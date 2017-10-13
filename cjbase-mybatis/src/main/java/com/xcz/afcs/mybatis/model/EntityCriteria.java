@@ -28,6 +28,9 @@ public class EntityCriteria implements Serializable{
     private List<Order> orderList = new ArrayList();
 
     @Getter
+    private List<Join> joinList = new ArrayList<>();
+
+    @Getter
     @Setter
     private Pagination pagination;
 
@@ -47,6 +50,10 @@ public class EntityCriteria implements Serializable{
     private Class<?> resultViewCls;
 
     @Getter
+    @Setter
+    private String tableName;
+
+    @Getter
     private Map<String, Object> params = new LinkedHashMap<String, Object>();
 
     public EntityCriteria(Class<?> entityClass) {
@@ -55,12 +62,16 @@ public class EntityCriteria implements Serializable{
     }
 
     public void add(Expression expression) {
-        EntityField entityField = model.getEntityFieldByName(expression.getPropertyName());
-        if (entityField == null) {
-            logger.warn(expression.getPropertyName() + "在实体Bean " + entityClass.getSimpleName() + "中未定义");
+        if (expression.getPropertyName().contains(".")) {
             expression.setCloumnName(expression.getPropertyName());
-        }else {
-            expression.setCloumnName(entityField.getCloumnName());
+        }else{
+            EntityField entityField = model.getEntityFieldByName(expression.getPropertyName());
+            if (entityField == null) {
+                logger.warn(expression.getPropertyName() + "在实体Bean " + entityClass.getSimpleName() + "中未定义");
+                expression.setCloumnName(expression.getPropertyName());
+            }else {
+                expression.setCloumnName(entityField.getCloumnName());
+            }
         }
         expression.setParamName(expression.getPropertyName()+"_"+paramExt);
         params.put(expression.getParamName(), expression.getValue());
@@ -77,6 +88,10 @@ public class EntityCriteria implements Serializable{
             order.setCloumnName(entityField.getCloumnName());
         }
         this.orderList.add(order);
+    }
+
+    public void add(Join join) {
+        joinList.add(join);
     }
 
 }
