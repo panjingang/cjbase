@@ -6,6 +6,8 @@ import com.xcz.afcs.mybatis.model.*;
 import com.xcz.afcs.mybatis.provider.params.BaseParam;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import com.xcz.afcs.mybatis.util.EntityViewUtil;
+import com.xcz.afcs.util.ObjectUtil;
+import com.xcz.afcs.util.ValueUtil;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,26 +68,6 @@ public class BaseSQLProvider  {
         }
         return sql;
     }
-
-    /*
-    public <T> String queryViewSQL(final EntityCriteria<T> criteria) {
-        final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
-        final List<String> wheres = getWhereSQL(criteria.getExpressionList());
-        final List<String> orders = getOrderSQL(criteria.getOrderList(), model.getPrimaryField());
-        final Pagination page     = criteria.getPagination();
-        String sql = new SQL() {
-            {
-                SELECT(getSelectColumns(criteria, model).toArray(new String[0]));
-                FROM(model.getTableName());
-                WHERE(wheres.toArray(new String[0]));
-                ORDER_BY(orders.toArray(new String[0]));
-            }
-        }.toString();
-        if (page != null) {
-            sql += " LIMIT "+page.getOffset()+","+page.getPageSize();
-        }
-        return sql;
-    }*/
 
     public <T> String insertSQL(final T entity) {
          final EntityModel model = EntityUtil.parseEntity(entity.getClass());
@@ -183,35 +165,44 @@ public class BaseSQLProvider  {
         List<String> wheres = new ArrayList<String>();
         StringBuilder sb = new StringBuilder();
         for (Expression expression : expressionList) {
-            sb.append(expression.getCloumnName());
+            if (expression.isIgnoreEmpty() && ValueUtil.isEmpty(expression.getValue())) {
+                continue;
+            }
             switch (expression.getExp()) {
                 case EQ:
+                     sb.append(expression.getCloumnName());
                      sb.append(" = ");
                      sb.append("#{params.").append(expression.getParamName()).append("}");
                      break;
                 case LIKE:
+                    sb.append(expression.getCloumnName());
                     sb.append(" LIKE ");
                     sb.append("CONCAT").append("('%',");
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     sb.append(",'%')");
                     break;
                 case GT:
+                    sb.append(expression.getCloumnName());
                     sb.append(" > ");
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     break;
                 case LT:
+                    sb.append(expression.getCloumnName());
                     sb.append(" < ");
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     break;
                 case GTE:
+                    sb.append(expression.getCloumnName());
                     sb.append(" >= ");
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     break;
                 case LTE:
+                    sb.append(expression.getCloumnName());
                     sb.append(" <= ");
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     break;
                 case IN:
+                    sb.append(expression.getCloumnName());
                     sb.append(" IN (");
                     List<?> list = (List<?>)expression.getValue();
                     for(int i=0; i<list.size(); i++) {
@@ -222,7 +213,6 @@ public class BaseSQLProvider  {
                     }
                     sb.append(")");
                     break;
-
             }
             wheres.add(sb.toString());
             sb.delete(0, sb.length()); //清空

@@ -3,6 +3,7 @@ package com.xcz.afcs.mybatis.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -24,10 +25,17 @@ public class Expression {
 
     private Object value;
 
-    private Expression (String propertyName, EXP exp, Object value) {
+    private boolean ignoreEmpty;
+
+    private Expression (String propertyName, EXP exp, Object value){
+       this(propertyName, exp, value, true);
+    }
+
+    private Expression (String propertyName, EXP exp, Object value, boolean ignoreEmpty) {
         this.propertyName = propertyName;
         this.exp          = exp;
         this.value        = value;
+        this.ignoreEmpty  = ignoreEmpty;
     }
 
 
@@ -55,7 +63,7 @@ public class Expression {
         return new Expression(propertyName, EXP.LTE, value);
     }
 
-    public static  <T> Expression in(String propertyName, List<T> value) {
+    public static  <T> Expression in(String propertyName, Collection<T> value) {
         return new Expression(propertyName, EXP.IN, value);
     }
 
