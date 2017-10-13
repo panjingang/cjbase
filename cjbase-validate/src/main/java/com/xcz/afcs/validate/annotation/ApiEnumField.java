@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = ApiEnumFieldValidator.class)
 public @interface ApiEnumField{
 
-    String message() default "{xcz.afbp.validation.enum}";
+    String message() default "{xcz.afcs.validation.enum}";
 
     Class<?>[] groups() default {};
 

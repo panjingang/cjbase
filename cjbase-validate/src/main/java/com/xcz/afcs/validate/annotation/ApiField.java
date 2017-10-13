@@ -1,5 +1,6 @@
 package com.xcz.afcs.validate.annotation;
 
+import com.xcz.afcs.validate.enums.ValidateType;
 import com.xcz.afcs.validate.validator.ApiFieldValidator;
 
 import javax.validation.Constraint;
@@ -15,7 +16,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = ApiFieldValidator.class)
 public @interface ApiField {
 
-    String message() default "{xcz.afbp.validation.blank}";
+    String message() default "{xcz.afcs.validation.blank}";
 
     Class<?>[] groups() default {};
 
@@ -24,6 +25,8 @@ public @interface ApiField {
     String name() default "";
 
     String desc() default "";
+
+    ValidateType type() default ValidateType.BLANK;
 
     Class<? extends Serializable> subCls() default String.class;
 

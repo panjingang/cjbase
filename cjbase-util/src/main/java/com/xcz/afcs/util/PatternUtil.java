@@ -110,6 +110,8 @@ public class PatternUtil {
     /**验证一个月的31天*/
     private static final String V_31DAYS="^((0?[1-9])|((1|2)[0-9])|30|31)$";
 
+    /**验证车牌号*/
+    private static final String V_PLATE_NO="^[\\u4e00-\\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$";
 
     /**
      * 验证是不是整数
@@ -422,6 +424,15 @@ public class PatternUtil {
      */
     public static boolean isZipcode(String value){
         return match(V_ZIPCODE,value);
+    }
+
+    /**
+     * 验证车牌号
+     * @param value 要验证的字符串
+     * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
+     */
+    public static boolean isPlateNo(String value){
+        return match(V_PLATE_NO,value);
     }
 
     /**
