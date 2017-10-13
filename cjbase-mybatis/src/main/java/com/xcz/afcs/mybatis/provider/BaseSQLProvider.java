@@ -6,7 +6,6 @@ import com.xcz.afcs.mybatis.model.*;
 import com.xcz.afcs.mybatis.provider.params.BaseParam;
 import com.xcz.afcs.mybatis.util.EntityUtil;
 import com.xcz.afcs.mybatis.util.EntityViewUtil;
-import com.xcz.afcs.util.ObjectUtil;
 import com.xcz.afcs.util.ValueUtil;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
@@ -33,7 +32,7 @@ public class BaseSQLProvider  {
                  ORDER_BY(model.getPrimaryField().getCloumnName()+" DESC ");
              }
          }.toString();
-         sql += " LIMIT 0, 500";
+         sql += " LIMIT 0, 1000";
          return sql;
      }
 

@@ -21,7 +21,7 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
         entityClass = (Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    //最大获取500条数据
+    //最大获取1000条数据
     public List<T> findAll(){
         return getDAO().findAll(entityClass);
     }
