@@ -29,28 +29,39 @@ public class ApiFieldValidator implements ConstraintValidator<ApiField, Object> 
              }else {
                  return true;
              }
-        }
-        ValidateType fieldType = apiField.type();
-        if (value instanceof String) {
-            String data = (String)value;
-            if(apiField.required() && StringUtils.isBlank(data)) {
-                return false;
-            }
-            switch (fieldType) {
-                case MOBILE:    return validateMobile(context, data);
-                case IDNO:      return validateIdNo(context, data);
-                case EMAIL:     return validateEmail(context, data);
-                case QQ:        return validateQQ(context, data);
-                case ZIPCODE:   return validateZipcode(context, data);
-                case URL:       return validateUrl(context, data);
-                case TELEPHONE: return validateTelephone(context, data);
-                case PLATE_NO:  return validatePlateNo(context, data);
-                case IP4:       return validateIPV4(context, data);
-                default:        return validateBlank(context, data);
+        }else {
+            if (value instanceof String) {
+                String data = (String)value;
+                if (apiField.required()) {
+                     return validatorValue(data, context);
+                }else{
+                    if (StringUtils.isBlank(data)) {
+                        return true;
+                    }
+                    return validatorValue(data, context);
+                }
+            }else {
+                return true;
             }
         }
-        return true;
     }
+
+    private boolean validatorValue(String data, ConstraintValidatorContext context) {
+        ValidateType fieldType = apiField.type();
+        switch (fieldType) {
+            case MOBILE:    return validateMobile(context, data);
+            case IDNO:      return validateIdNo(context, data);
+            case EMAIL:     return validateEmail(context, data);
+            case QQ:        return validateQQ(context, data);
+            case ZIPCODE:   return validateZipcode(context, data);
+            case URL:       return validateUrl(context, data);
+            case TELEPHONE: return validateTelephone(context, data);
+            case PLATE_NO:  return validatePlateNo(context, data);
+            case IP4:       return validateIPV4(context, data);
+            default:        return validateBlank(context, data);
+        }
+    }
+
 
     private boolean validateBlank(ConstraintValidatorContext context, String data) {
         context.disableDefaultConstraintViolation();
