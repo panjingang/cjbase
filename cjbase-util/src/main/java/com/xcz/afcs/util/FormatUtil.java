@@ -59,9 +59,6 @@ public class FormatUtil {
         return new DecimalFormat(sb.toString());
     }
 
-    public static String formatMobile(String mobile) {
-        return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
-    }
 
     public static String formatBigData(String data) {
         StringBuilder sBuilder = new StringBuilder();
@@ -73,50 +70,6 @@ public class FormatUtil {
         }
         sBuilder.append(')');
         return sBuilder.toString();
-    }
-
-    public static String formatIdNo(String idNo) {
-        return printSensitiveKeepTerminal(idNo);
-    }
-
-    public static String formatPassword(String password) {
-        return "******";
-    }
-
-    private static String printSensitiveKeepTerminal(String info) {
-        return printSensitiveKeepTerminal(info, 50);
-    }
-
-    private static String printSensitiveKeepTerminal(String info, int maskPercentage) {
-        if (StringUtils.isEmpty(info)) {
-            return "";
-        } else {
-            if (maskPercentage > 100) {
-                maskPercentage = 100;
-            } else if (maskPercentage < 0) {
-                maskPercentage = 0;
-            }
-            int fullLength = info.length();
-            int maskLength = fullLength * maskPercentage / 100;
-            if (0 == maskLength && maskPercentage > 0) {
-                maskLength = 1;
-            }
-            int plainLength = fullLength - maskLength;
-            int plainHalfLength = plainLength / 2;
-            if (0 == plainHalfLength && maskPercentage < 100) {
-                plainHalfLength = 1;
-            }
-            int maskStart = plainHalfLength;
-            int maskEnd = maskStart + maskLength;
-            if (maskEnd > fullLength) {
-                maskEnd = fullLength;
-            }
-            StringBuilder sBuilder = new StringBuilder(info);
-            for (int i = maskStart; i <= maskEnd; i++) {
-                sBuilder.setCharAt(i, '*');
-            }
-            return sBuilder.toString();
-        }
     }
 
 }
