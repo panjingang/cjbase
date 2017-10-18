@@ -7,7 +7,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Set;
+import java.util.*;
 
 public class ValidateUtil {
     
@@ -34,6 +34,14 @@ public class ValidateUtil {
     }
  
     private static <T> String buildMessageFromViolations(Set<ConstraintViolation<T>> violations) {
+        List<ConstraintViolation<T>> list = new ArrayList<>(violations);
+        Collections.sort(list, new Comparator<ConstraintViolation<T>>() {
+            @Override
+            public int compare(ConstraintViolation<T> o1, ConstraintViolation<T> o2) {
+                return o1.getMessage().compareTo(o2.getMessage());
+            }
+        });
+
         StringBuilder sBuilder = new StringBuilder(violations.size() * 32);
         for (ConstraintViolation<T> violation : violations) {
             sBuilder.append(violation.getMessage());
