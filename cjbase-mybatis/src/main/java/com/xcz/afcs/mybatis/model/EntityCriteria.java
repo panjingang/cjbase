@@ -81,12 +81,17 @@ public class EntityCriteria implements Serializable{
     }
 
     public void add(Order order) {
-        EntityField entityField = model.getEntityFieldByName(order.getPropertyName());
-        if (entityField == null) {
-            logger.warn(order.getPropertyName() + "在实体Bean " + entityClass.getSimpleName() + "中未定义");
+        if (order.getPropertyName().contains(".")) {
             order.setCloumnName(order.getPropertyName());
-        } else {
-            order.setCloumnName(entityField.getCloumnName());
+        }
+        else {
+            EntityField entityField = model.getEntityFieldByName(order.getPropertyName());
+            if (entityField == null) {
+                logger.warn(order.getPropertyName() + "在实体Bean " + entityClass.getSimpleName() + "中未定义");
+                order.setCloumnName(order.getPropertyName());
+            } else {
+                order.setCloumnName(entityField.getCloumnName());
+            }
         }
         this.orderList.add(order);
     }
