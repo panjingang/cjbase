@@ -43,6 +43,10 @@ public class EntityCriteria implements Serializable{
 
     @Getter
     @Setter
+    private QueryType queryType;
+
+    @Getter
+    @Setter
     private List<String> selectColumns = new ArrayList<String>();
 
     @Getter
@@ -58,6 +62,7 @@ public class EntityCriteria implements Serializable{
 
     public EntityCriteria(Class<?> entityClass) {
         this.entityClass = entityClass;
+        this.queryType = QueryType.MULTI;
         model = EntityUtil.parseEntity(entityClass);
     }
 
@@ -98,6 +103,11 @@ public class EntityCriteria implements Serializable{
 
     public void add(Join join) {
         joinList.add(join);
+    }
+
+    public enum QueryType {
+         ONE,
+         MULTI
     }
 
 }

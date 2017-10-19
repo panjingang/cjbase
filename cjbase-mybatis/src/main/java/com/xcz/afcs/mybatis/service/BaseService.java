@@ -56,6 +56,7 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
     }
 
     public <V> V get(EntityCriteria criteria) {
+        criteria.setQueryType(EntityCriteria.QueryType.ONE);
         List<T> list = query(criteria);
         if (ObjectUtil.isNull(list)) {
             return null;

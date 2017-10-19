@@ -85,8 +85,12 @@ public class BaseSQLProvider  {
                 ORDER_BY(orders.toArray(new String[0]));
             }
         }.toString();
-        if (page != null) {
-            sql += " LIMIT "+page.getOffset()+","+page.getPageSize();
+        if (EntityCriteria.QueryType.ONE == criteria.getQueryType()) {
+            sql += " LIMIT 1";
+        }else {
+            if (page != null) {
+                sql += " LIMIT " + page.getOffset() + "," + page.getPageSize();
+            }
         }
         return sql;
     }
@@ -173,7 +177,7 @@ public class BaseSQLProvider  {
 
     private <T> List<String> getOrderSQL(List<Order> orderList, EntityCriteria criteria, EntityField primaryField) {
         List<String> orders = new ArrayList<String>();
-        if (orderList.size() == 0 && StringUtils.isBlank(criteria.getTableName())) {
+        if (orderList.size() == 0 && StringUtils.isBlank(criteria.getTableName()) &&  EntityCriteria.QueryType.MULTI == criteria.getQueryType()) {
             orders.add(primaryField.getCloumnName()+" DESC ");
             return orders;
         }
