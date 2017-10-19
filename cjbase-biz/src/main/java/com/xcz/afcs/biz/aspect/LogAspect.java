@@ -2,6 +2,7 @@ package com.xcz.afcs.biz.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.xcz.afcs.api.param.BaseParameter;
+import com.xcz.afcs.core.jackson.PrintObjectMapper;
 import lombok.Setter;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class LogAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
+
+    protected static final PrintObjectMapper objectMapper = new PrintObjectMapper();
 
     @Setter
     private String from = "client";
@@ -35,7 +38,7 @@ public abstract class LogAspect {
             if (pjp.getArgs() != null) {
                 Object param = pjp.getArgs()[0];
                 if (param instanceof BaseParameter) {
-                    LOG.info(getInMark() + " " + JSON.toJSONString(param));
+                    LOG.info(getInMark() + " " + objectMapper.writeValueAsString(param));
                 }
             } else {
                 LOG.info(getInMark() + " {}");
@@ -44,7 +47,7 @@ public abstract class LogAspect {
             return result;
         }
         finally{
-            LOG.info(getOutMark()+ " "+JSON.toJSONString(result)+" 处理时间:"+(System.currentTimeMillis()-startTime)+" 毫秒");
+            LOG.info(getOutMark()+ " "+objectMapper.writeValueAsString(result)+" 处理时间:"+(System.currentTimeMillis()-startTime)+" 毫秒");
         }
     }
 
