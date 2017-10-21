@@ -1,11 +1,14 @@
 package com.xcz.afcs.util;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 /**
  * Created by jingang on 2017/10/21.
  */
 public class BigDecimalUtil {
+
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
 
     public static boolean isNullOrZero(final BigDecimal value) {
         return value == null || value.signum() == 0;
@@ -133,7 +136,13 @@ public class BigDecimalUtil {
         return null;
     }
 
+    public static BigDecimal movePoint(final BigDecimal v1, final int shift) {
+        return v1 == null ? null : v1.movePointRight(shift);
+    }
 
+    public static String percentFormat(final BigDecimal bd) {
+        return bd != null ? NUMBER_FORMAT.format(bd.movePointRight(2)) : "";
+    }
 
 
 

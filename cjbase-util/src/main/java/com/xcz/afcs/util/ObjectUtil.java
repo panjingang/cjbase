@@ -30,6 +30,7 @@ public class ObjectUtil {
         return !isNull(object);
     }
 
+
     public static  boolean equals(Object src, Object dest) {
         if (src == dest) {
             return true;
