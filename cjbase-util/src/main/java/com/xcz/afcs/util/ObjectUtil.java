@@ -30,8 +30,14 @@ public class ObjectUtil {
         return !isNull(object);
     }
 
-    public static <T> boolean equals(T src, T dest) {
-        return (src != null) ? (src.equals(dest)) : (dest == null);
+    public static  boolean equals(Object src, Object dest) {
+        if (src == dest) {
+            return true;
+        }
+        if (src == null || dest == null) {
+            return false;
+        }
+        return src.equals(dest);
     }
 
     public static <T> boolean isSerializable(T object) {
