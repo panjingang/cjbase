@@ -328,15 +328,17 @@ public class BaseSQLProvider  {
      }
 
      public String getOrderAndPageSQL(BaseParam param) {
-         SQL sql = new SQL();
-         if (param.getOrderList() != null) {
+         StringBuilder sql = new StringBuilder();
+         if (!ValueUtil.isEmpty(param.getOrderList())) {
+             sql.append(" ORDER BY ");
              for (Order order : param.getOrderList()) {
                   if (order.isAscending()) {
-                      sql.ORDER_BY(order.getPropertyName()+" ASC ");
+                      sql.append(order.getPropertyName()+" ASC, ");
                   }else {
-                      sql.ORDER_BY(order.getPropertyName()+" DESC ");
+                      sql.append(order.getPropertyName()+" DESC, ");
                   }
              }
+             sql.deleteCharAt(sql.length()-2);
          }
          if (param.getPage() != null) {
              return sql.toString()+" LIMIT #{page.offset}, #{page.pageSize}";

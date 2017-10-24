@@ -1,14 +1,15 @@
 package com.xcz.afcs.mybatis.provider;
 
+import com.xcz.afcs.core.model.Pagination;
 import com.xcz.afcs.mybatis.entity.UserEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
 import com.xcz.afcs.mybatis.model.Expression;
 import com.xcz.afcs.mybatis.model.Join;
+import com.xcz.afcs.mybatis.model.Order;
+import com.xcz.afcs.mybatis.provider.params.BaseParam;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jingang on 2017/10/13.
@@ -33,8 +34,10 @@ public class BaseSQLProviderTest {
     @Test
     public void querySQL() {
         EntityCriteria entityCriteria = new EntityCriteria(UserEntity.class);
+        entityCriteria.setQueryType(EntityCriteria.QueryType.ONE);
         entityCriteria.add(Expression.eq("userId", ""));
         entityCriteria.add(Expression.eq("userName", "测试"));
+        entityCriteria.add(Order.desc("createTime"));
         String sql = new BaseSQLProvider().querySQL(entityCriteria);
         System.out.println(sql);
     }
@@ -62,6 +65,17 @@ public class BaseSQLProviderTest {
         entityCriteria.add(Expression.eq("t1.userName", "测试"));
         String sql = new BaseSQLProvider().querySQL(entityCriteria);
         System.out.println(sql);
+    }
+
+    @Test
+    public void getOrderAndPageSQL() {
+        List<Order> list = new ArrayList();
+        list.add(Order.desc("userId"));
+        list.add(Order.asc("createTime"));
+        BaseParam baseParam = new BaseParam();
+        baseParam.setOrderList(list);
+        baseParam.setPage(new Pagination());
+        System.out.println(new BaseSQLProvider().getOrderAndPageSQL(baseParam));
     }
 
 
