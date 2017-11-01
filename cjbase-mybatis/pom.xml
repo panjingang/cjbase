@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>cjbase-redis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cjbase-util</artifactId>
             <version>${project.version}</version>
         </dependency>
