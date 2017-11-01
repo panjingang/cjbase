@@ -207,6 +207,13 @@ public class BaseSQLProvider  {
                     sb.append("#{params.").append(expression.getParamName()).append("}");
                     sb.append(",'%')");
                     break;
+                case RLIKE:
+                    sb.append(expression.getCloumnName());
+                    sb.append(" LIKE ");
+                    sb.append("CONCAT").append("('',");
+                    sb.append("#{params.").append(expression.getParamName()).append("}");
+                    sb.append(",'%')");
+                    break;
                 case GT:
                     sb.append(expression.getCloumnName());
                     sb.append(" > ");

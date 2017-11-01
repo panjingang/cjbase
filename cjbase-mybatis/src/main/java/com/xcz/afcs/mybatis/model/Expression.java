@@ -12,7 +12,7 @@ import java.util.List;
 public class Expression {
 
     public enum EXP {
-        EQ, LIKE, GT, LT, GTE, LTE, IN
+        EQ, LIKE, RLIKE, GT, LT, GTE, LTE, IN
     }
 
     private EXP exp;
@@ -45,6 +45,10 @@ public class Expression {
 
     public static Expression like(String propertyName, Object value) {
         return new Expression(propertyName, EXP.LIKE, value);
+    }
+
+    public static Expression rlike(String propertyName, Object value) {
+        return new Expression(propertyName, EXP.RLIKE, value);
     }
 
     public static Expression gt(String propertyName, Object value) {
