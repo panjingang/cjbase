@@ -18,7 +18,7 @@ public abstract class BaseCacheService<T extends UpdatableEntity, K> extends Bas
     }
 
     public int update(T entity) {
-        int rows = getDAO().update(entity);
+        int rows = super.update(entity);
         putCache(entity);
         return rows;
     }

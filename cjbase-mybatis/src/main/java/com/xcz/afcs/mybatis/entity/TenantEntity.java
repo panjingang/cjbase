@@ -1,7 +1,6 @@
 package com.xcz.afcs.mybatis.entity;
 
 import com.xcz.afcs.mybatis.annonation.Column;
-import com.xcz.afcs.validate.annotation.ApiField;
 import lombok.Getter;
 import lombok.Setter;
 

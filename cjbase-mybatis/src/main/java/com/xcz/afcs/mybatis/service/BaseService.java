@@ -1,11 +1,14 @@
 package com.xcz.afcs.mybatis.service;
 
+import com.xcz.afcs.core.context.DataContext;
 import com.xcz.afcs.core.enums.BaseErrorCode;
 import com.xcz.afcs.core.exception.BaseBusinessException;
 import com.xcz.afcs.mybatis.dao.BaseDao;
+import com.xcz.afcs.mybatis.entity.TenantEntity;
 import com.xcz.afcs.mybatis.entity.UpdatableEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
 import com.xcz.afcs.util.ObjectUtil;
+import com.xcz.afcs.util.ValueUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -35,20 +38,31 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
     }
 
     public void save(T entity) {
-        entity.setVersion(0L);
+        initEntity(entity);
         getDAO().save(entity);
     }
 
+    private void initEntity(T entity) {
+        entity.setVersion(0L);
+        if (entity instanceof TenantEntity) {
+            TenantEntity tenantEntity = (TenantEntity) entity;
+            if (tenantEntity.getTenantId() == null) {
+                Long tenantId = ValueUtil.getLong(DataContext.getTenantId());
+                tenantEntity.setTenantId(tenantId);
+            }
+        }
+    }
+
+
     public void batchSave(List<T> entityList) {
         for (T entity : entityList) {
-            entity.setVersion(0L);
+            initEntity(entity);
         }
         getDAO().batchSave(entityList);
     }
 
     public void saveOrUpdate(T entity) {
         if (entity.getVersion() == null) {
-            entity.setVersion(0L);
             save(entity);
         }else{
             updateCas(entity);
