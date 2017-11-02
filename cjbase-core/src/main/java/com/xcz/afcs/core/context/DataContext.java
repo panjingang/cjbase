@@ -1,6 +1,7 @@
 package com.xcz.afcs.core.context;
 
 import com.xcz.afcs.core.model.SessionIdentity;
+import com.xcz.afcs.util.ValueUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class DataContext {
         return (SessionIdentity)get(SESSION_IDENTITY);
     }
 
-    public static String getTenantId(){
-        return (String)get(TENANT_ID);
+    public static Long getTenantId(){
+        return ValueUtil.getLong(get(TENANT_ID));
     }
 }

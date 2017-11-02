@@ -12,6 +12,11 @@ import java.io.Serializable;
 @Setter
 public class CacheKey implements Serializable {
 
+      public CacheKey(String prefix, Long expireTime) {
+            this.prefix = prefix;
+            this.expireTime = expireTime;
+      }
+
       private String prefix;
 
       private Long expireTime;

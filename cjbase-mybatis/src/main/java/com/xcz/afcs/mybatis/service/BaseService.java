@@ -47,7 +47,7 @@ public abstract class BaseService<T extends UpdatableEntity, K> {
         if (entity instanceof TenantEntity) {
             TenantEntity tenantEntity = (TenantEntity) entity;
             if (tenantEntity.getTenantId() == null) {
-                Long tenantId = ValueUtil.getLong(DataContext.getTenantId());
+                Long tenantId = DataContext.getTenantId();
                 tenantEntity.setTenantId(tenantId);
             }
         }
