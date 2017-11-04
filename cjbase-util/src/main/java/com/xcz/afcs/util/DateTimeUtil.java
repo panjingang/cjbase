@@ -103,6 +103,16 @@ public class DateTimeUtil {
         }
     }
 
+    public static Date toBeginDateOrNull(String dateString) {
+        Date date = toDateOrNull(dateString, FORMAT_YYYYMMDD);
+        return (date == null) ? null : beginOfDay(date);
+    }
+
+    public static Date toEndDateOrNull(String dateString) {
+        Date date = toDateOrNull(dateString, FORMAT_YYYYMMDD);
+        return (date == null) ? null : endOfDay(date);
+    }
+
 
     public static Date beginOfDay(Date date) {
         Calendar cal = Calendar.getInstance();

@@ -30,5 +30,5 @@ public @interface ApiDateField {
      * 指明格式
      * @return
      */
-    String pattern() default DateTimeUtil.FORMAT_YYYYMMDDHHMMSS_NO_BREAK;
+    String pattern() default DateTimeUtil.FORMAT_YYYYMMDD;
 }
