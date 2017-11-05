@@ -66,6 +66,17 @@ public class FileUtil {
         return fileUri.substring(lastIndexStart+1);
     }
 
+
+    public static String getFileNameNotExtName(String fileUri) {
+        String fileName = getFileName(fileUri);
+        int lastIndexStart = fileName.lastIndexOf(StrUtil.DOT);
+        if(lastIndexStart == -1 ){
+            return StrUtil.EMPTY;
+        }
+        return fileName.substring(0, lastIndexStart);
+    }
+
+
     public static String genFileUri(String filePath, String fileName) {
         if (ValueUtil.isEmpty(filePath)) {
             return fileName;
