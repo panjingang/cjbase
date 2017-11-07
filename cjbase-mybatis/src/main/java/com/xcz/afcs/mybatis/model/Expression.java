@@ -38,6 +38,10 @@ public class Expression {
         this.ignoreEmpty  = ignoreEmpty;
     }
 
+    public Expression notIgnoreEmpty() {
+        this.ignoreEmpty = false;
+        return this;
+    }
 
     public static Expression eq(String propertyName, Object value) {
         return new Expression(propertyName, EXP.EQ, value);
@@ -70,5 +74,6 @@ public class Expression {
     public static  <T> Expression in(String propertyName, Collection<T> value) {
         return new Expression(propertyName, EXP.IN, value);
     }
+
 
 }

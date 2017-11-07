@@ -65,6 +65,8 @@ public class BaseSQLProvider  {
         final EntityModel model   = EntityUtil.parseEntity(criteria.getEntityClass());
         final List<String> wheres = getWhereSQL(criteria.getExpressionList());
         final List<String> orders = getOrderSQL(criteria.getOrderList(), criteria, model.getPrimaryField());
+        final List<String> groups = criteria.getGroupByColumns();
+
         final Pagination page     = criteria.getPagination();
         String sql = new SQL() {
             {
@@ -82,6 +84,7 @@ public class BaseSQLProvider  {
                     }
                 }
                 WHERE(wheres.toArray(new String[0]));
+                GROUP_BY(groups.toArray(new String[0]));
                 ORDER_BY(orders.toArray(new String[0]));
             }
         }.toString();
@@ -174,6 +177,7 @@ public class BaseSQLProvider  {
             }
         }.toString();
     }
+
 
     private <T> List<String> getOrderSQL(List<Order> orderList, EntityCriteria criteria, EntityField primaryField) {
         List<String> orders = new ArrayList<String>();

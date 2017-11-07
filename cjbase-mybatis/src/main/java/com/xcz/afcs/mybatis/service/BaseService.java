@@ -7,6 +7,8 @@ import com.xcz.afcs.mybatis.dao.BaseDao;
 import com.xcz.afcs.mybatis.entity.TenantEntity;
 import com.xcz.afcs.mybatis.entity.UpdatableEntity;
 import com.xcz.afcs.mybatis.model.EntityCriteria;
+import com.xcz.afcs.mybatis.model.Expression;
+import com.xcz.afcs.util.CollectionUtil;
 import com.xcz.afcs.util.ObjectUtil;
 import com.xcz.afcs.util.ValueUtil;
 

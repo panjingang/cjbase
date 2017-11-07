@@ -50,6 +50,9 @@ public class EntityCriteria implements Serializable{
     private List<String> selectColumns = new ArrayList<String>();
 
     @Getter
+    private List<String> groupByColumns = new ArrayList<>();
+
+    @Getter
     @Setter
     private Class<?> resultViewCls;
 
@@ -99,6 +102,10 @@ public class EntityCriteria implements Serializable{
             }
         }
         this.orderList.add(order);
+    }
+
+    public void addGroupBy(String propertyName) {
+        this.getGroupByColumns().add(propertyName);
     }
 
     public void add(Join join) {
