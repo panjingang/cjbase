@@ -14,7 +14,7 @@ public class DataContext {
     public static final String TENANT_ID        = NAMESPACE + ".tenantId";
 
 
-    protected static ThreadLocal<DataContext> dataContext = new ThreadLocal<DataContext>() {
+    protected static ThreadLocal<DataContext> dataContext = new InheritableThreadLocal<DataContext>() {
         protected DataContext initialValue() {
             return new DataContext();
         }
